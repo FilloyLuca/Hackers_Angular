@@ -31,13 +31,6 @@ export class HackerForm {
 
   hacker: Hacker = new Hacker('', '', '', '')
 
-  // hackerForm = new FormGroup({
-  //   ip: new FormControl(''),
-  //   countryName: new FormControl(''),
-  //   regionName: new FormControl(''),
-  //   city: new FormControl(''),
-  //   id: new FormControl(undefined)
-  // })
   hackerForm = new FormGroup({
     ip: new FormControl<string>(''),
     countryName: new FormControl<string>(''),
@@ -48,15 +41,13 @@ export class HackerForm {
 
 
   onSubmit() {
-    console.log("Submit")
-    console.log(this.hackerForm.value)
+    if (this.hackerForm.invalid) return;
+
+    const hacker = this.hackerForm.value as IHacker;
+    this.managerHackerservice.addOrUpdate(hacker);
+    this.hackerForm.reset();
   }
 
-  // clear() {
-  //   this.hackerForm.controls.ip.setValue("103.125.234.210")
-  //   console.log("cancel")
-  //   console.log(this.hackerForm.value)
-  // }
   clear() {
     this.hackerForm.reset();
     console.log("Formulaire réinitialisé");

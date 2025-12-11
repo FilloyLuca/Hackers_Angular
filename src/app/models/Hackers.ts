@@ -5,7 +5,7 @@ export class Hacker implements IHacker {
     public countryName: string,
     public regionName: string,
     public city: string,
-    public id?: string) {
+    public id?: string | null) {
     // rien à faire de plus ici
   }
 }

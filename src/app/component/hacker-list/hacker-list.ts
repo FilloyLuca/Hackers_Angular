@@ -9,15 +9,22 @@ import { ManagerHacker } from '../../service/manager-hacker';
   styleUrl: './hacker-list.css',
 })
 export class HackerList {
+  hackers: Hacker[] = [];
 
-  hackers: Hacker[]
+  constructor(private managerHackerService: ManagerHacker) { }
 
-  constructor(private managerHackerService: ManagerHacker) {
-    this.hackers = managerHackerService.getAllHackers()
+  ngOnInit() {
+    this.hackers = this.managerHackerService.getAllHackers();
+    console.log('Initial hackers', this.hackers);
+
+    this.managerHackerService.hackersChanged$.subscribe(list => {
+      this.hackers = list;
+      console.log('Updated hackers', this.hackers);
+    });
   }
 
   editHacker(hacker: Hacker) {
-    this.managerHackerService.editHacker(hacker) 
+    this.managerHackerService.editHacker(hacker);
   }
-
 }
+
