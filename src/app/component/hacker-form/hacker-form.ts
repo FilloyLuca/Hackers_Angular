@@ -10,7 +10,9 @@ import { LookupIp } from '../../service/lookup-ip';
   styleUrl: './hacker-form.css',
 })
 export class HackerForm {
+
 constructor(private lookupIpService: LookupIp) { }
+
   getInfoByIP() {
     this.lookupIpService.getGeoLocationIp(this.hackerForm.value.ip || '').subscribe({
       next: (data) => {
