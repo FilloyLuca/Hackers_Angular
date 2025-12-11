@@ -7,5 +7,5 @@ export interface IHacker {
   countryName: string,
   regionName: string,
   city: string,
-  id?: string
+  id?: string | null
 }
