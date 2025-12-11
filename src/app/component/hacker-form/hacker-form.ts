@@ -11,7 +11,7 @@ import { LookupIp } from '../../service/lookup-ip';
 })
 export class HackerForm {
 
-constructor(private lookupIpService: LookupIp) { }
+  constructor(private lookupIpService: LookupIp) { }
 
   getInfoByIP() {
     this.lookupIpService.getGeoLocationIp(this.hackerForm.value.ip || '').subscribe({
@@ -41,10 +41,15 @@ constructor(private lookupIpService: LookupIp) { }
     console.log("Submit")
     console.log(this.hackerForm.value)
   }
+
+  // clear() {
+  //   this.hackerForm.controls.ip.setValue("103.125.234.210")
+  //   console.log("cancel")
+  //   console.log(this.hackerForm.value)
+  // }
   clear() {
-    this.hackerForm.controls.ip.setValue("103.125.234.210")
-    console.log("cancel")
-    console.log(this.hackerForm.value)
+    this.hackerForm.reset();
+    console.log("Formulaire réinitialisé");
   }
 
 }
