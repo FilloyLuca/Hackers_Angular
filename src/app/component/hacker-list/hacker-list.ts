@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Hacker } from '../../models/Hackers';
 import { ManagerHacker } from '../../service/manager-hacker';
+import { IHacker } from '../../models/IHackers';
+
 
 @Component({
   selector: 'app-hacker-list',
@@ -25,6 +27,12 @@ export class HackerList {
 
   editHacker(hacker: Hacker) {
     this.managerHackerService.editHacker(hacker);
+  }
+
+   deleteHacker(hacker: IHacker) {
+    if (confirm("Supprimer ce hacker ?")) {
+      this.managerHackerService.delete(hacker)
+    }
   }
 }
 

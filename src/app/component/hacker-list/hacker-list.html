@@ -14,7 +14,7 @@
             <th>Opérations</th>
         </tr>
     </thead>
-    
+
     <tbody>
         <tr *ngFor="let hacker of hackers">
             <td>{{ hacker.ip }}</td>
@@ -24,7 +24,7 @@
             <td>
                 <i class="bi bi-pencil-square" (click)="editHacker(hacker)"  style="color: green; cursor: pointer;">
                 </i>
-                <i class="bi bi-eraser-fill" style="color: red; cursor: pointer;">
+                <i class="bi bi-eraser-fill" (click)="deleteHacker(hacker)" style="color: red; cursor: pointer;">
                 </i>
             </td>
         </tr>

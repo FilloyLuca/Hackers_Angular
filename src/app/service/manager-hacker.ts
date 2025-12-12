@@ -81,6 +81,18 @@ export class ManagerHacker {
     return `${ts}-${rnd}`;
   }
 
+  delete(hacker: IHacker): Hacker[] {
+  const list = this.loadAll();
+  
+  const newList = list.filter(h => h.id !== hacker.id);
+
+  this.saveAll(newList);
+  this.hackersChanged.emit(newList);
+
+  return newList;
+}
+
+
 }
 
 

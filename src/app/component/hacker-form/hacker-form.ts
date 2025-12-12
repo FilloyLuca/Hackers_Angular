@@ -9,14 +9,14 @@ import { ManagerHacker } from '../../service/manager-hacker';
   selector: 'app-hacker-form',
   templateUrl: './hacker-form.html',
   styleUrl: './hacker-form.css',
-  standalone:false 
+  standalone: false
 })
 export class HackerForm {
 
   constructor(
     private lookupIpService: LookupIp,
     private managerHackerservice: ManagerHacker
-  ) {}
+  ) { }
 
   hackerForm = new FormGroup({
     ip: new FormControl<string>(''),
@@ -48,7 +48,7 @@ export class HackerForm {
   onSubmit() {
     if (this.hackerForm.invalid) return;
 
-    const hacker = this.hackerForm_to_hacker();   
+    const hacker = this.hackerForm_to_hacker();
     this.managerHackerservice.addOrUpdate(hacker);
 
     this.hackerForm.reset();
