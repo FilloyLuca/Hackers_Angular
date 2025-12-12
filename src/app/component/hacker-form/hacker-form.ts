@@ -7,78 +7,68 @@ import { ManagerHacker } from '../../service/manager-hacker';
 
 @Component({
   selector: 'app-hacker-form',
-  standalone: false,
   templateUrl: './hacker-form.html',
   styleUrl: './hacker-form.css',
+  standalone:false 
 })
 export class HackerForm {
 
-  constructor(private lookupIpService: LookupIp, private managerHackerservice: ManagerHacker) { }
-
-  getInfoByIP() {
-    this.lookupIpService.getGeoLocationIp(this.hackerForm.value.ip || '').subscribe({
-      next: (data) => {
-        console.log(data);
-        this.hackerForm.controls.countryName.setValue(data.country_name);
-        this.hackerForm.controls.regionName.setValue(data.region_name);
-        this.hackerForm.controls.city.setValue(data.city);
-      },
-      error: (err) => {
-        console.error('Error fetching IP information:', err);
-      }
-    });
-  }
-
-  hacker: Hacker = new Hacker('', '', '', '')
+  constructor(
+    private lookupIpService: LookupIp,
+    private managerHackerservice: ManagerHacker
+  ) {}
 
   hackerForm = new FormGroup({
     ip: new FormControl<string>(''),
     countryName: new FormControl<string>(''),
     regionName: new FormControl<string>(''),
     city: new FormControl<string>(''),
-    id: new FormControl<string | null | undefined>(null)  // <= ici
+    id: new FormControl<string | null>(null)
   });
 
+  ngOnInit(): void {
+    this.managerHackerservice.editHackerEvent
+      .subscribe((hacker: IHacker) => {
+        console.log('Edition reçue dans le formulaire !');
+        this.hacker_to_hackerForm(hacker);
+      });
+  }
+
+  getInfoByIP() {
+    this.lookupIpService.getGeoLocationIp(this.hackerForm.value.ip || '').subscribe({
+      next: (data) => {
+        this.hackerForm.controls.countryName.setValue(data.country_name);
+        this.hackerForm.controls.regionName.setValue(data.region_name);
+        this.hackerForm.controls.city.setValue(data.city);
+      },
+      error: (err) => console.error('Erreur Lookup IP', err)
+    });
+  }
 
   onSubmit() {
     if (this.hackerForm.invalid) return;
 
-    const hacker = this.hackerForm.value as IHacker;
+    const hacker = this.hackerForm_to_hacker();   
     this.managerHackerservice.addOrUpdate(hacker);
+
     this.hackerForm.reset();
   }
 
   clear() {
     this.hackerForm.reset();
-    console.log("Formulaire réinitialisé");
+    console.log('Formulaire réinitialisé');
   }
 
-  ngOnInit(): void {
-    this.managerHackerservice.editHackerEvent
-      .subscribe((hacker: IHacker) => {
-        console.log('Event message editEvent')
-        this.hacker_to_hackerForm(hacker)
-      })
-  }
-
-  /**
-  * Créer une instance de Hacker à partir des données hackerForm
-  * @renvoie une référence à l’objet Hacker
-  */
   private hackerForm_to_hacker(): IHacker {
     return new Hacker(
-
       this.hackerForm.controls.ip.value ?? '',
       this.hackerForm.controls.countryName.value ?? '',
       this.hackerForm.controls.regionName.value ?? '',
       this.hackerForm.controls.city.value ?? '',
-      this.hackerForm.controls.id.value ?? undefined)
+      this.hackerForm.controls.id.value ?? undefined
+    );
   }
 
-
-  /**
-  * Initialise this.hackerForm à partir du paramètre hacker instance (object)
-  */
   private hacker_to_hackerForm(hacker: IHacker): void {
     this.hackerForm.patchValue({
       ip: hacker.ip,
@@ -86,8 +76,6 @@ export class HackerForm {
       regionName: hacker.regionName,
       city: hacker.city,
       id: hacker.id ?? null
-    })
+    });
   }
-
-
 }
